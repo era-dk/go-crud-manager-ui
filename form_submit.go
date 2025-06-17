@@ -14,10 +14,7 @@ type FormSubmit struct {
 }
 
 /* FormFieldInterface */
-func (ff FormSubmit) Load() {}
-
-/* FormFieldInterface */
-func (ff *FormSubmit) Reset() {
+func (ff *FormSubmit) Load() {
 	ff.err = nil
 }
 

@@ -31,12 +31,6 @@ func (ff *FormFieldSelect) Load() {
 }
 
 /* FormFieldInterface */
-func (ff *FormFieldSelect) Reset() {
-	ff.cursor = -1
-	ff.selected = -1
-}
-
-/* FormFieldInterface */
 func (ff *FormFieldSelect) Focus() {
 	if ff.selected != -1 {
 		ff.cursor = ff.selected

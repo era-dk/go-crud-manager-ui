@@ -4,7 +4,6 @@ import tea "github.com/charmbracelet/bubbletea"
 
 type FormFieldInterface interface {
 	Load()
-	Reset()
 	Focus()
 	Blur()
 	Key() string

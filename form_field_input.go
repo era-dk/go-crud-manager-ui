@@ -21,11 +21,6 @@ func (ff *FormFieldInput) Load() {
 }
 
 /* FormFieldInterface */
-func (ff *FormFieldInput) Reset() {
-	ff.model.SetValue("")
-}
-
-/* FormFieldInterface */
 func (ff *FormFieldInput) Focus() {
 	ff.model.Focus()
 }

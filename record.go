@@ -31,12 +31,6 @@ type Record struct {
 	keyMap map[string]any
 }
 
-func (r *Record) Reset() {
-	r.ID = 0
-	r.keys = []string{}
-	r.keyMap = map[string]any{}
-}
-
 func (r Record) Keys() []string {
 	return r.keys
 }
