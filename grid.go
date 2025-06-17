@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	Listing = &ListingLayer{
+	Grid = &GridLayer{
 		Limit: 10,
 		FetchFn: nil,
 		Columns: []table.Column{},
@@ -22,7 +22,7 @@ var (
 	}
 )
 
-type ListingLayer struct {
+type GridLayer struct {
 	Limit int
 	FetchFn func (limit int, offset int) (RecordCollection, int, error)
 	Columns []table.Column
@@ -34,27 +34,27 @@ type ListingLayer struct {
 	err error
 }
 
-func (l *ListingLayer) AddColumn(title string, width int) *ListingLayer {
+func (l *GridLayer) AddColumn(title string, width int) *GridLayer {
 	l.Columns = append(l.Columns, table.Column{Title: title, Width: width})
 	return l
 }
 
-func (l ListingLayer) HasRows() bool {
+func (l GridLayer) HasRows() bool {
 	return len(l.tableModel.Rows()) > 0
 }
 
-func (l ListingLayer) FocusedId() int {
+func (l GridLayer) FocusedId() int {
 	cursor := l.tableModel.Cursor()
 	return l.ids[cursor]
 }
 
 /* LayerInterface */
-func (l *ListingLayer) Load() {
+func (l *GridLayer) Load() {
 	l.load()
 }
 
 /* LayerInterface */
-func (l *ListingLayer) Watch(msg tea.Msg) tea.Cmd {
+func (l *GridLayer) Watch(msg tea.Msg) tea.Cmd {
 	rowsExists := l.HasRows()
 
 	switch msg := msg.(type) {
@@ -80,7 +80,7 @@ func (l *ListingLayer) Watch(msg tea.Msg) tea.Cmd {
 }
 
 /* LayerInterface */
-func (l *ListingLayer) RenderBody() string {
+func (l *GridLayer) RenderBody() string {
 	if len(l.Columns) < 1 {
 		return ErrorStyle.Render("columns not found")
 	}
@@ -100,7 +100,7 @@ func (l *ListingLayer) RenderBody() string {
 }
 
 /* LayerInterface */
-func (l ListingLayer) Help() []HelpCmd {
+func (l GridLayer) Help() []HelpCmd {
 	if l.totalSize > l.Limit {
 		return []HelpCmd{
 			{Label: "Pager", Cmd: "left / right"},
@@ -109,7 +109,7 @@ func (l ListingLayer) Help() []HelpCmd {
 	return []HelpCmd{}
 }
 
-func (l ListingLayer) renderToolbar() string {
+func (l GridLayer) renderToolbar() string {
 	leftPagerSymbol := "<"
 	rightPagerSymbol := ">"
 
@@ -144,7 +144,7 @@ func (l ListingLayer) renderToolbar() string {
 	)
 }
 
-func (l *ListingLayer) load() {
+func (l *GridLayer) load() {
 	var (
 		records RecordCollection
 		totalItems int

@@ -28,7 +28,7 @@ func (l *ViewLayer) Load() {
 
 /* LayerInterface */
 func (l *ViewLayer) Watch(msg tea.Msg) tea.Cmd {
-	if l.Handle == nil || !Listing.HasRows() {
+	if l.Handle == nil || !Grid.HasRows() {
 		return nil
 	}
 
@@ -39,7 +39,7 @@ func (l *ViewLayer) Watch(msg tea.Msg) tea.Cmd {
 			switch msg.String() {
 			case "v":
 				var record Record
-				record, l.err = l.Handle(Listing.FocusedId())
+				record, l.err = l.Handle(Grid.FocusedId())
 				SetCurrentPage(&ViewPage)
 				View.Record = record
 				return BreakCmd
@@ -75,7 +75,7 @@ func (l ViewLayer) RenderBody() string {
 
 /* LayerInterface */
 func (l ViewLayer) Help() []HelpCmd {
-	if l.Handle == nil || !Listing.HasRows() || CurrentPage == &ViewPage {
+	if l.Handle == nil || !Grid.HasRows() || CurrentPage == &ViewPage {
 		return []HelpCmd{}
 	}
 	

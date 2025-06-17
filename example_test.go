@@ -108,12 +108,12 @@ func deleteTestDataRecord(id int) {
 }
 
 func TestExample(t *testing.T) {
-	Listing.
+	Grid.
 		AddColumn("ID", 10).
 		AddColumn("Name", 20).
 		AddColumn("Email", 40).
 		AddColumn("Gender", 20)	
-	Listing.FetchFn = func (limit int, offset int) (RecordCollection, int, error) {
+	Grid.FetchFn = func (limit int, offset int) (RecordCollection, int, error) {
 		results := getTestDataList(limit, offset)
 		
 		records := NewRecordCollection()

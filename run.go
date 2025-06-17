@@ -10,7 +10,7 @@ var (
 	IndexPage = Page{
 		Title: "List records",
 		Layers: []LayerInterface{
-			Listing,
+			Grid,
 			Create,
 			View,
 			Edit,

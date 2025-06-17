@@ -23,7 +23,7 @@ func (l *EditLayer) Load() {}
 
 /* LayerInterface */
 func (l *EditLayer) Watch(msg tea.Msg) tea.Cmd {
-	if l.Handle == nil || !Listing.HasRows() || len(Form.Fields) < 1 {
+	if l.Handle == nil || !Grid.HasRows() || len(Form.Fields) < 1 {
 		return nil
 	}
 
@@ -34,7 +34,7 @@ func (l *EditLayer) Watch(msg tea.Msg) tea.Cmd {
 			switch msg.String() {
 			case "e":
 				var record Record
-				record, l.err = l.Handle(Listing.FocusedId())
+				record, l.err = l.Handle(Grid.FocusedId())
 				SetCurrentPage(&EditPage)
 				Form.SetRecord(record)
 			}
@@ -56,7 +56,7 @@ func (l EditLayer) RenderBody() string {
 
 /* LayerInterface */
 func (l EditLayer) Help() []HelpCmd {
-	if l.Handle == nil || !Listing.HasRows() || len(Form.Fields) < 1 {
+	if l.Handle == nil || !Grid.HasRows() || len(Form.Fields) < 1 {
 		return []HelpCmd{}
 	}
 	

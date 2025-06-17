@@ -26,7 +26,7 @@ func (l *DeleteLayer) Load() {}
 
 /* LayerInterface */
 func (l *DeleteLayer) Watch(msg tea.Msg) tea.Cmd {
-	if l.Handle == nil || !Listing.HasRows() {
+	if l.Handle == nil || !Grid.HasRows() {
 		return nil
 	}
 
@@ -35,10 +35,10 @@ func (l *DeleteLayer) Watch(msg tea.Msg) tea.Cmd {
 		case tea.KeyMsg:
 			switch msg.String() {
 			case "y":
-				if err := l.Handle(Listing.FocusedId()); err != nil {
+				if err := l.Handle(Grid.FocusedId()); err != nil {
 					l.err = err
 				} else {
-					Listing.Load()
+					Grid.Load()
 				}
 			}
 		}
@@ -65,7 +65,7 @@ func (l *DeleteLayer) RenderBody() string {
 
 		return fmt.Sprintf(
 			"Delete record [ID: %d] [y/N] %s",
-			Listing.FocusedId(),
+			Grid.FocusedId(),
 			tiModel.View(),
 		)
 	}
@@ -80,7 +80,7 @@ func (l *DeleteLayer) RenderBody() string {
 
 /* LayerInterface */
 func (l DeleteLayer) Help() []HelpCmd {
-	if l.Handle == nil || !Listing.HasRows() {
+	if l.Handle == nil || !Grid.HasRows() {
 		return []HelpCmd{}
 	}
 	
