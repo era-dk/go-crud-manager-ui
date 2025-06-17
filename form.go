@@ -2,8 +2,6 @@ package manager
 
 import (
 	"bytes"
-	"fmt"
-	"strconv"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
@@ -36,31 +34,13 @@ func (l *FormLayer) Validate() bool {
 	return valid
 }
 
-func (l *FormLayer) GetValue(name string) any {
+func (l *FormLayer) GetField(name string) FormFieldInterface {
 	for _, field := range l.Fields {
 		if field.Key() == name {
-			return field.GetValue()
+			return field
 		}
 	}
 	return nil
-}
-
-func (r FormLayer) GetIntValue(name string) int {
-	if v := r.GetValue(name); v != nil {
-		vv, _ := strconv.Atoi(fmt.Sprintf("%v", v))
-		return vv
-	}
-	return 0
-}
-
-func (r FormLayer) GetStringValue(name string) string {
-	if v := r.GetValue(name); v != nil {
-		if i, ok := v.(string); ok {
-			return i
-		}
-		return fmt.Sprintf("%v", v)
-	}
-	return ""
 }
 
 /* LayerInterface */

@@ -7,8 +7,8 @@ type FormFieldInterface interface {
 	Focus()
 	Blur()
 	Key() string
-	GetValue() any
-	SetValue(v any)
+	GetValue() FormValue
+	SetValue(v FormValue)
 	Validate() error
 	Watch(tea.Msg) tea.Cmd
 	Render() string

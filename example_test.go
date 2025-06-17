@@ -194,9 +194,9 @@ func TestExample(t *testing.T) {
 			Handle: func (id int) error {
 				saveTestDataRecord(User{
 					ID: Form.RecordID,
-					Name: Form.GetStringValue("name"),
-					Email: Form.GetStringValue("email"),
-					Gender: UserGender(Form.GetIntValue("gender")),
+					Name: Form.GetField("name").GetValue().GetString(),
+					Email: Form.GetField("email").GetValue().GetString(),
+					Gender: UserGender(Form.GetField("gender").GetValue().GetInt()),
 				})
 				return nil
 			},

@@ -39,7 +39,7 @@ func (l *EditLayer) Watch(msg tea.Msg) tea.Cmd {
 
 				Form.RecordID = record.ID
 				for _, field := range Form.Fields {
-					field.SetValue(record.Get(field.Key()))
+					field.SetValue(FormValue{record.Get(field.Key())})
 				}
 			}
 		}

@@ -36,13 +36,13 @@ func (ff *FormFieldInput) Key() string {
 }
 
 /* FormFieldInterface */
-func (ff *FormFieldInput) GetValue() any {
-	return ff.model.Value()
+func (ff *FormFieldInput) GetValue() FormValue {
+	return FormValue{ff.model.Value()}
 }
 
 /* FormFieldInterface */
-func (ff *FormFieldInput) SetValue(v any) {
-	ff.model.SetValue(fmt.Sprintf("%v", v))
+func (ff *FormFieldInput) SetValue(v FormValue) {
+	ff.model.SetValue(v.GetString())
 }
 
 /* FormFieldInterface */

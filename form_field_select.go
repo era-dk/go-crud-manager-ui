@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"strconv"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
@@ -52,18 +51,18 @@ func (ff *FormFieldSelect) Key() string {
 }
 
 /* FormFieldInterface */
-func (ff FormFieldSelect) GetValue() any {
+func (ff FormFieldSelect) GetValue() FormValue {
 	for i, item := range ff.Items {
 		if i == ff.selected {
-			return item.ID
+			return FormValue{item.ID}
 		} 
 	}
-	return 0
+	return FormValue{}
 }
 
 /* FormFieldInterface */
-func (ff *FormFieldSelect) SetValue(v any) {
-	vv, _ := strconv.Atoi(fmt.Sprintf("%v", v))
+func (ff *FormFieldSelect) SetValue(v FormValue) {
+	vv := v.GetInt()
 	for i, item := range ff.Items {
 		if item.ID == vv {
 			ff.selected = i
@@ -74,7 +73,7 @@ func (ff *FormFieldSelect) SetValue(v any) {
 
 /* FormFieldInterface */
 func (ff *FormFieldSelect) Validate() error {
-	id := ff.GetValue().(int)
+	id := ff.GetValue().GetInt()
 	if ff.Required && id == 0 {
 		return errors.New("field is required")
 	}

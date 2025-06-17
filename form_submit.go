@@ -34,12 +34,12 @@ func (ff FormSubmit) Key() string {
 }
 
 /* FormFieldInterface */
-func (ff FormSubmit) GetValue() any {
-	return "submit"
+func (ff FormSubmit) GetValue() FormValue {
+	return FormValue{}
 }
 
 /* FormFieldInterface */
-func (ff *FormSubmit) SetValue(v any) {}
+func (ff FormSubmit) SetValue(v FormValue) {}
 
 /* FormFieldInterface */
 func (ff FormSubmit) Validate() error {
