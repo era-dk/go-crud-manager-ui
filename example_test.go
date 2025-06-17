@@ -6,6 +6,7 @@ import (
 	"log"
 	"slices"
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/Oudwins/zog"
@@ -23,35 +24,56 @@ var UserGenderLabels = map[UserGender]string{
 	UserGenderFemale: "Female",
 }
 
+type UserTag int
+const (
+    UserTagPrimary UserTag = iota + 1
+    UserTagSecondary
+    UserTagExtend
+)
+var UserTagLabels = map[UserTag]string{
+	UserTagPrimary: "Primary",
+	UserTagSecondary: "Secondary",
+	UserTagExtend: "Extend",
+}
+
 type User struct {
 	ID int
 	Name string
 	Email string
 	Gender UserGender
+	Tags []UserTag
+}
+
+func (u User) TagsLabel() string {
+	var tags []string
+	for _, tag := range u.Tags {
+		tags = append(tags, UserTagLabels[tag])
+	}
+	return strings.Join(tags, ", ")
 }
 
 var testData = []User{
-	{ID: 1, Name: "Oliver", Email: "oliver@email.com", Gender: UserGenderMale},
-	{ID: 2, Name: "Jack", Email: "jack@email.com", Gender: UserGenderMale},
-	{ID: 3, Name: "Jacob", Email: "jacob@email.com", Gender: UserGenderMale},
-	{ID: 4, Name: "Thomas", Email: "thomas@email.com", Gender: UserGenderMale},
-	{ID: 5, Name: "Emily", Email: "emily@email.com", Gender: UserGenderFemale},
-	{ID: 6, Name: "Joanne", Email: "joanne@email.com", Gender: UserGenderFemale},
-	{ID: 7, Name: "James", Email: "james@email.com", Gender: UserGenderMale},
-	{ID: 8, Name: "Elizabeth", Email: "elizabeth@email.com", Gender: UserGenderFemale},
-	{ID: 9, Name: "Jessica", Email: "jessica@email.com", Gender: UserGenderFemale},
-	{ID: 10, Name: "Robert", Email: "robert@email.com", Gender: UserGenderMale},
-	{ID: 11, Name: "Richard", Email: "richard@email.com", Gender: UserGenderMale},
-	{ID: 12, Name: "Sophie", Email: "sophie@email.com", Gender: UserGenderFemale},
-	{ID: 13, Name: "Megan", Email: "megan@email.com", Gender: UserGenderFemale},
-	{ID: 14, Name: "Susan", Email: "susan@email.com", Gender: UserGenderFemale},
-	{ID: 15, Name: "Jennifer", Email: "jennifer@email.com", Gender: UserGenderFemale},
-	{ID: 16, Name: "Michael", Email: "michael@email.com", Gender: UserGenderMale},
-	{ID: 17, Name: "Joseph", Email: "joseph@email.com", Gender: UserGenderMale},
-	{ID: 18, Name: "Charlie", Email: "charlie@email.com", Gender: UserGenderMale},
-	{ID: 19, Name: "George", Email: "george@email.com", Gender: UserGenderMale},
-	{ID: 20, Name: "Oscar", Email: "oscar@email.com", Gender: UserGenderMale},
-	{ID: 21, Name: "Kyle", Email: "kyle@email.com", Gender: UserGenderMale},
+	{ID: 1, Name: "Oliver", Email: "oliver@email.com", Gender: UserGenderMale, Tags: []UserTag{UserTagPrimary, UserTagSecondary}},
+	{ID: 2, Name: "Jack", Email: "jack@email.com", Gender: UserGenderMale, Tags: []UserTag{UserTagPrimary, UserTagSecondary}},
+	{ID: 3, Name: "Jacob", Email: "jacob@email.com", Gender: UserGenderMale, Tags: []UserTag{UserTagSecondary}},
+	{ID: 4, Name: "Thomas", Email: "thomas@email.com", Gender: UserGenderMale, Tags: []UserTag{UserTagSecondary}},
+	{ID: 5, Name: "Emily", Email: "emily@email.com", Gender: UserGenderFemale, Tags: []UserTag{UserTagSecondary, UserTagExtend}},
+	{ID: 6, Name: "Joanne", Email: "joanne@email.com", Gender: UserGenderFemale, Tags: []UserTag{UserTagSecondary, UserTagExtend}},
+	{ID: 7, Name: "James", Email: "james@email.com", Gender: UserGenderMale, Tags: []UserTag{UserTagSecondary}},
+	{ID: 8, Name: "Elizabeth", Email: "elizabeth@email.com", Gender: UserGenderFemale, Tags: []UserTag{UserTagPrimary, UserTagSecondary, UserTagExtend}},
+	{ID: 9, Name: "Jessica", Email: "jessica@email.com", Gender: UserGenderFemale, Tags: []UserTag{UserTagPrimary, UserTagExtend}},
+	{ID: 10, Name: "Robert", Email: "robert@email.com", Gender: UserGenderMale, Tags: []UserTag{UserTagSecondary}},
+	{ID: 11, Name: "Richard", Email: "richard@email.com", Gender: UserGenderMale, Tags: []UserTag{UserTagSecondary, UserTagExtend}},
+	{ID: 12, Name: "Sophie", Email: "sophie@email.com", Gender: UserGenderFemale, Tags: []UserTag{UserTagSecondary}},
+	{ID: 13, Name: "Megan", Email: "megan@email.com", Gender: UserGenderFemale, Tags: []UserTag{UserTagPrimary, UserTagSecondary}},
+	{ID: 14, Name: "Susan", Email: "susan@email.com", Gender: UserGenderFemale, Tags: []UserTag{UserTagSecondary, UserTagExtend}},
+	{ID: 15, Name: "Jennifer", Email: "jennifer@email.com", Gender: UserGenderFemale, Tags: []UserTag{UserTagPrimary, UserTagSecondary}},
+	{ID: 16, Name: "Michael", Email: "michael@email.com", Gender: UserGenderMale, Tags: []UserTag{UserTagSecondary}},
+	{ID: 17, Name: "Joseph", Email: "joseph@email.com", Gender: UserGenderMale, Tags: []UserTag{UserTagExtend}},
+	{ID: 18, Name: "Charlie", Email: "charlie@email.com", Gender: UserGenderMale, Tags: []UserTag{UserTagPrimary, UserTagSecondary}},
+	{ID: 19, Name: "George", Email: "george@email.com", Gender: UserGenderMale, Tags: []UserTag{UserTagSecondary}},
+	{ID: 20, Name: "Oscar", Email: "oscar@email.com", Gender: UserGenderMale, Tags: []UserTag{UserTagPrimary, UserTagSecondary}},
+	{ID: 21, Name: "Kyle", Email: "kyle@email.com", Gender: UserGenderMale, Tags: []UserTag{UserTagExtend}},
 }
 
 func getTestDataList(limit int, offset int) []User {
@@ -112,7 +134,8 @@ func TestExample(t *testing.T) {
 		AddColumn("ID", 10).
 		AddColumn("Name", 20).
 		AddColumn("Email", 40).
-		AddColumn("Gender", 20)	
+		AddColumn("Gender", 20).
+		AddColumn("Tags", 30)
 	Grid.FetchFn = func (limit int, offset int) (RecordCollection, int, error) {
 		results := getTestDataList(limit, offset)
 		
@@ -122,7 +145,8 @@ func TestExample(t *testing.T) {
 				Set("ID", strconv.Itoa(item.ID)).
 				Set("Name", item.Name).
 				Set("Email", item.Email).
-				Set("Gender", UserGenderLabels[item.Gender])
+				Set("Gender", UserGenderLabels[item.Gender]).
+				Set("Tags", item.TagsLabel())
 		}
 		return records, len(testData), nil
 	}
