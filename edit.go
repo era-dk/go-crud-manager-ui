@@ -36,7 +36,11 @@ func (l *EditLayer) Watch(msg tea.Msg) tea.Cmd {
 				var record Record
 				record, l.err = l.Handle(Grid.FocusedId())
 				SetCurrentPage(&EditPage)
-				Form.SetRecord(record)
+
+				Form.RecordID = record.ID
+				for _, field := range Form.Fields {
+					field.SetValue(record.Get(field.Key()))
+				}
 			}
 		}
 	}

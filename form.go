@@ -63,13 +63,6 @@ func (r FormLayer) GetStringValue(name string) string {
 	return ""
 }
 
-func (l *FormLayer) SetRecord(record Record) {
-	l.RecordID = record.ID
-	for _, field := range l.Fields {
-		field.SetValue(record.Get(field.Key()))
-	}
-}
-
 /* LayerInterface */
 func (l *FormLayer) Load() {
 	l.RecordID = 0
